@@ -10,19 +10,16 @@ I first came across it through [Kevin Grajeda](https://www.kvin.me/) via [this p
 
 ## Installation
 
-### npm
+### npm (via GitHub)
 
 ```
-npm install 3-pixel-grid
+npm install MetaHeavies/3-pixel-grid
 ```
 
-### CDN / Script Tag
+### Manual
 
-```html
-<link rel="stylesheet" href="pixel-grid.css">
-<script src="pixel-grid.js"></script>
-```
-
+Copy `dist/pixel-grid.js` and `dist/pixel-grid.css` (or `dist/pixel-grid.full.css` for color variants) into your project.
+ 
 ## Quick Start
 
 ```html
