@@ -79,6 +79,24 @@ PixelGrid.create(element, {
 - `name` (string) — identifier
 - `delays` (array of 9 numbers) — stagger delay in ms for each cell (left-to-right, top-to-bottom)
 - `duration` (number) — hold time in ms before fade-out begins
+- `colors` (array of 9 strings, optional) — per-cell color name from the palette
+
+### Multi-Color Animations
+
+Animations can assign a different color to each cell. Use a built-in multi-color preset or pass a custom `colors` array:
+
+```js
+PixelGrid.create(element, {
+  animation: {
+    name: 'my-gradient',
+    delays: [0, 80, 160, 240, 320, 400, 480, 560, 640],
+    duration: 200,
+    colors: ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple', 'magenta', 'pink']
+  }
+});
+```
+
+When `colors` is omitted, the grid uses the default color (or whichever grid-level color class you apply).
 
 ## API
 
@@ -139,6 +157,21 @@ Direct access to the preset lookup object.
 | `converge` | Corners and edges converge to center |
 | `zigzag` | Zigzag path through cells |
 
+### Multi-Color Presets
+
+These presets include per-cell colors (requires `colors.css` or `pixel-grid.full.css`):
+
+| Name | Pattern | Colors |
+|------|---------|--------|
+| `aurora` | Diagonal sweep | cyan, teal, blue, purple, magenta |
+| `ember` | Spiral | yellow, orange, red, magenta |
+| `prism` | Sequential | Full rainbow spectrum |
+| `sunset` | Bottom-to-top wave | orange, yellow, magenta, red, blue, purple |
+| `tide` | Top-to-bottom wave | teal, cyan, blue, purple |
+| `frost` | Center outward | blue, cyan, white |
+| `toxic` | Corners first | lime, green, yellow |
+| `neon-cross` | Cross pattern | magenta, cyan, white |
+
 ## CSS
 
 ### Core (`pixel-grid.css`)
@@ -147,13 +180,17 @@ Includes the grid layout, cell states, default cyan color, and reduced-motion me
 
 ### Colors (`colors.css`)
 
-Optional. Adds 12 color variant classes:
+Optional. Adds 12 grid-level color classes and 12 cell-level color classes (used automatically by multi-color presets).
+
+Grid-level (uniform color):
 
 ```html
 <div class="pixel-grid pixel-grid--magenta" data-pixel-grid></div>
 ```
 
 Available: `cyan`, `magenta`, `yellow`, `green`, `orange`, `blue`, `red`, `purple`, `white`, `teal`, `pink`, `lime`.
+
+Cell-level classes (`.pixel-grid__cell--{color}`) are applied automatically by the engine when an animation has a `colors` array. You don't need to add them manually.
 
 ### Full (`pixel-grid.full.css`)
 
