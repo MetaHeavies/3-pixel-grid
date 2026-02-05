@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A tiny 3x3 animated pixel grid indicator driven by simple delay arrays",
   "main": "dist/pixel-grid.js",
+  "style": "dist/pixel-grid.css",
   "files": [
     "dist/",
     "src/",

@@ -2,12 +2,18 @@
 
 A tiny 3x3 animated pixel grid indicator driven by simple delay arrays. Zero dependencies, under 3KB.
 
+## Credits
+
+The pixel grid loading concept was originally created by [SuCodee](https://www.youtube.com/@SuCodee) for Swift projects.
+
+I first came across it through [Kevin Grajeda](https://www.kvin.me/) via [this post on X](https://x.com/k_grajeda/status/2017358045957759121), which inspired this web implementation.
+
 ## Installation
 
 ### npm
 
 ```
-npm install 3px-grid
+npm install 3-pixel-grid
 ```
 
 ### CDN / Script Tag
