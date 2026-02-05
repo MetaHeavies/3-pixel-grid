@@ -51,10 +51,65 @@
   var prefersReducedMotion = typeof window !== 'undefined' &&
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  var NAMED_COLORS = ['cyan', 'magenta', 'yellow', 'green', 'orange', 'blue', 'red', 'purple', 'white', 'teal', 'pink', 'lime'];
+
   function clearChildren(el) {
     while (el.firstChild) {
       el.removeChild(el.firstChild);
     }
+  }
+
+  // ─── Color Helpers ───
+
+  function isHexColor(str) {
+    return typeof str === 'string' && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(str);
+  }
+
+  function applyHexVars(el, hex) {
+    el.style.setProperty('--pixel-on', hex);
+    el.style.setProperty('--pixel-off', 'color-mix(in oklch, ' + hex + ' 25%, black)');
+    el.style.setProperty('--pixel-glow', 'color-mix(in oklch, ' + hex + ' 60%, transparent)');
+  }
+
+  function clearHexVars(el) {
+    el.style.removeProperty('--pixel-on');
+    el.style.removeProperty('--pixel-off');
+    el.style.removeProperty('--pixel-glow');
+  }
+
+  function applyContainerColor(container, config) {
+    clearContainerColor(container);
+    if (config.color) {
+      if (isHexColor(config.color)) {
+        applyHexVars(container, config.color);
+      } else {
+        container.classList.add('pixel-grid--' + config.color);
+      }
+    }
+  }
+
+  function clearContainerColor(container) {
+    for (var i = 0; i < NAMED_COLORS.length; i++) {
+      container.classList.remove('pixel-grid--' + NAMED_COLORS[i]);
+    }
+    clearHexVars(container);
+  }
+
+  function applyCellColor(cell, colorName) {
+    clearCellColor(cell);
+    if (!colorName) return;
+    if (isHexColor(colorName)) {
+      applyHexVars(cell, colorName);
+    } else {
+      cell.classList.add('pixel-grid__cell--' + colorName);
+    }
+  }
+
+  function clearCellColor(cell) {
+    for (var i = 0; i < NAMED_COLORS.length; i++) {
+      cell.classList.remove('pixel-grid__cell--' + NAMED_COLORS[i]);
+    }
+    clearHexVars(cell);
   }
 
   // ─── Instance Factory ───
@@ -75,11 +130,12 @@
       var cell = document.createElement('div');
       cell.className = 'pixel-grid__cell';
       if (config.colors && config.colors[i]) {
-        cell.classList.add('pixel-grid__cell--' + config.colors[i]);
+        applyCellColor(cell, config.colors[i]);
       }
       container.appendChild(cell);
       cells.push(cell);
     }
+    applyContainerColor(container, config);
 
     function resolveAnimation(anim) {
       if (typeof anim === 'string') {
@@ -162,13 +218,10 @@
 
     function applyCellColors() {
       for (var i = 0; i < 9; i++) {
-        var cls = cells[i].className.split(' ').filter(function(c) {
-          return c.indexOf('pixel-grid__cell--') !== 0;
-        });
+        clearCellColor(cells[i]);
         if (config.colors && config.colors[i]) {
-          cls.push('pixel-grid__cell--' + config.colors[i]);
+          applyCellColor(cells[i], config.colors[i]);
         }
-        cells[i].className = cls.join(' ');
       }
     }
 
@@ -176,6 +229,7 @@
       var wasRunning = running;
       stop();
       config = resolveAnimation(anim);
+      applyContainerColor(container, config);
       applyCellColors();
       if (wasRunning) {
         play();
