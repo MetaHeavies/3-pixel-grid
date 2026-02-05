@@ -1,0 +1,42 @@
+/* ─── Pixel Grid — Core Styles ─── */
+
+.pixel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 3px);
+  grid-template-rows: repeat(3, 3px);
+  gap: 1px;
+}
+
+/* ─── Cell States ─── */
+
+.pixel-grid__cell {
+  background-color: var(--pixel-off);
+  box-shadow: none;
+  border-radius: 1px;
+  transition:
+    background-color 300ms ease-out,
+    box-shadow 300ms ease-out;
+}
+
+.pixel-grid__cell.is-on {
+  background-color: var(--pixel-on);
+  box-shadow:
+    0 0 3px var(--pixel-glow),
+    0 0 6px var(--pixel-glow);
+}
+
+/* ─── Default Color (Cyan) ─── */
+
+:root {
+  --pixel-off: oklch(35% 0.04 195 / 0.5);
+  --pixel-on: oklch(85% 0.15 195);
+  --pixel-glow: oklch(75% 0.18 195 / 0.8);
+}
+
+/* ─── Reduced Motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-grid__cell {
+    transition: none;
+  }
+}

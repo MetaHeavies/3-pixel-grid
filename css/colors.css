@@ -1,0 +1,73 @@
+/* ─── Pixel Grid — Color Variants ─── */
+
+.pixel-grid--cyan {
+  --pixel-off: oklch(40% 0.08 195 / 0.4);
+  --pixel-on: oklch(90% 0.2 195);
+  --pixel-glow: oklch(80% 0.25 195 / 0.9);
+}
+
+.pixel-grid--magenta {
+  --pixel-off: oklch(40% 0.08 330 / 0.4);
+  --pixel-on: oklch(85% 0.25 330);
+  --pixel-glow: oklch(75% 0.3 330 / 0.9);
+}
+
+.pixel-grid--yellow {
+  --pixel-off: oklch(50% 0.08 90 / 0.4);
+  --pixel-on: oklch(95% 0.2 90);
+  --pixel-glow: oklch(90% 0.25 90 / 0.9);
+}
+
+.pixel-grid--green {
+  --pixel-off: oklch(40% 0.08 145 / 0.4);
+  --pixel-on: oklch(90% 0.25 145);
+  --pixel-glow: oklch(80% 0.3 145 / 0.9);
+}
+
+.pixel-grid--orange {
+  --pixel-off: oklch(45% 0.08 50 / 0.4);
+  --pixel-on: oklch(85% 0.22 50);
+  --pixel-glow: oklch(75% 0.28 50 / 0.9);
+}
+
+.pixel-grid--blue {
+  --pixel-off: oklch(40% 0.08 260 / 0.4);
+  --pixel-on: oklch(80% 0.22 260);
+  --pixel-glow: oklch(70% 0.28 260 / 0.9);
+}
+
+.pixel-grid--red {
+  --pixel-off: oklch(40% 0.08 25 / 0.4);
+  --pixel-on: oklch(70% 0.25 25);
+  --pixel-glow: oklch(60% 0.3 25 / 0.9);
+}
+
+.pixel-grid--purple {
+  --pixel-off: oklch(40% 0.08 300 / 0.4);
+  --pixel-on: oklch(75% 0.22 300);
+  --pixel-glow: oklch(65% 0.28 300 / 0.9);
+}
+
+.pixel-grid--white {
+  --pixel-off: oklch(50% 0 0 / 0.3);
+  --pixel-on: oklch(98% 0 0);
+  --pixel-glow: oklch(95% 0 0 / 0.8);
+}
+
+.pixel-grid--teal {
+  --pixel-off: oklch(40% 0.08 175 / 0.4);
+  --pixel-on: oklch(82% 0.18 175);
+  --pixel-glow: oklch(72% 0.24 175 / 0.9);
+}
+
+.pixel-grid--pink {
+  --pixel-off: oklch(45% 0.08 350 / 0.4);
+  --pixel-on: oklch(80% 0.2 350);
+  --pixel-glow: oklch(70% 0.26 350 / 0.9);
+}
+
+.pixel-grid--lime {
+  --pixel-off: oklch(45% 0.08 120 / 0.4);
+  --pixel-on: oklch(88% 0.22 120);
+  --pixel-glow: oklch(80% 0.28 120 / 0.9);
+}

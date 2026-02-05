@@ -1,0 +1,28 @@
+{
+  "name": "3px-grid",
+  "version": "1.0.0",
+  "description": "A tiny 3x3 animated pixel grid indicator driven by simple delay arrays",
+  "main": "dist/pixel-grid.js",
+  "files": [
+    "dist/",
+    "src/",
+    "css/"
+  ],
+  "scripts": {
+    "build": "node build.js"
+  },
+  "keywords": [
+    "pixel-grid",
+    "loading-indicator",
+    "animation",
+    "3x3-grid",
+    "css-animation",
+    "micro-animation"
+  ],
+  "author": "MetaHeavies",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetaHeavies/pixel-grid"
+  }
+}
