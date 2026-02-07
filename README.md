@@ -98,6 +98,41 @@ PixelGrid.create(element, {
 
 When `colors` is omitted, the grid uses the default color (or whichever grid-level color class you apply).
 
+### Bloom
+
+Add a soft glow halo around the grid using an SVG bloom filter. Pass `bloom: true` for the default intensity, or a number to set a custom blur radius:
+
+```js
+// Default bloom (intensity 4)
+var grid = PixelGrid.create(element, {
+  animation: 'wave-lr',
+  bloom: true
+});
+
+// Custom intensity
+var grid = PixelGrid.create(element, {
+  animation: 'aurora',
+  bloom: 6
+});
+
+// Toggle at runtime
+grid.setBloom(false);   // off
+grid.setBloom(true);    // on (default intensity)
+grid.setBloom(10);      // on with custom intensity
+```
+
+The bloom filter works by extracting the brightest pixels (the lit cells), blurring them, and compositing the result back onto the original via screen blending. Higher values produce a wider, softer glow. Each instance gets its own filter, so different grids can have different bloom amounts.
+
+Declarative usage:
+
+```html
+<!-- Default bloom -->
+<div class="pixel-grid" data-pixel-grid data-pixel-grid-bloom></div>
+
+<!-- Custom amount -->
+<div class="pixel-grid" data-pixel-grid data-pixel-grid-bloom="6"></div>
+```
+
 ## API
 
 ### `PixelGrid.create(container, options)`
@@ -109,8 +144,9 @@ Creates a new pixel grid instance inside the given DOM element.
 |-----|------|---------|-------------|
 | `animation` | string or object | `'wave-lr'` | Preset name or custom animation object |
 | `autoplay` | boolean | `true` | Start animating immediately |
+| `bloom` | boolean or number | `false` | Enable bloom glow. `true` uses default intensity (4), a number sets custom blur radius |
 
-**Returns:** Instance object with `play()`, `stop()`, `setAnimation(anim)`, `destroy()`, `getConfig()`.
+**Returns:** Instance object with `play()`, `stop()`, `setAnimation(anim)`, `setBloom(value)`, `destroy()`, `getConfig()`.
 
 ### `PixelGrid.initAll()`
 

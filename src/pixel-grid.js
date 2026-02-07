@@ -112,6 +112,66 @@
     clearHexVars(cell);
   }
 
+  // ─── Bloom Filter ───
+
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var bloomSvg = null;
+  var DEFAULT_BLOOM_AMOUNT = 4;
+
+  function ensureBloomSvg() {
+    if (bloomSvg) return bloomSvg;
+    bloomSvg = document.createElementNS(SVG_NS, 'svg');
+    bloomSvg.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden');
+    bloomSvg.setAttribute('aria-hidden', 'true');
+    bloomSvg.appendChild(document.createElementNS(SVG_NS, 'defs'));
+    document.body.appendChild(bloomSvg);
+    return bloomSvg;
+  }
+
+  function createBloomFilter(id, amount) {
+    var svg = ensureBloomSvg();
+    var defs = svg.firstChild;
+    var filterId = 'pg-bloom-' + id;
+
+    removeBloomFilter(id);
+
+    var filter = document.createElementNS(SVG_NS, 'filter');
+    filter.setAttribute('id', filterId);
+    filter.setAttribute('x', '-100%');
+    filter.setAttribute('y', '-100%');
+    filter.setAttribute('width', '300%');
+    filter.setAttribute('height', '300%');
+
+    var matrix = document.createElementNS(SVG_NS, 'feColorMatrix');
+    matrix.setAttribute('in', 'SourceGraphic');
+    matrix.setAttribute('type', 'matrix');
+    matrix.setAttribute('values', '2 0 0 0 -0.5 0 2 0 0 -0.5 0 0 2 0 -0.5 0 0 0 1 0');
+    matrix.setAttribute('result', 'bright');
+
+    var blur = document.createElementNS(SVG_NS, 'feGaussianBlur');
+    blur.setAttribute('in', 'bright');
+    blur.setAttribute('stdDeviation', String(amount));
+    blur.setAttribute('result', 'glow');
+
+    var blend = document.createElementNS(SVG_NS, 'feBlend');
+    blend.setAttribute('in', 'SourceGraphic');
+    blend.setAttribute('in2', 'glow');
+    blend.setAttribute('mode', 'screen');
+
+    filter.appendChild(matrix);
+    filter.appendChild(blur);
+    filter.appendChild(blend);
+    defs.appendChild(filter);
+
+    return filter;
+  }
+
+  function removeBloomFilter(id) {
+    if (!bloomSvg) return;
+    var el = bloomSvg.firstChild.querySelector('#pg-bloom-' + id);
+    if (el) el.parentNode.removeChild(el);
+  }
+
   // ─── Instance Factory ───
 
   function createInstance(container, options) {
@@ -123,6 +183,8 @@
     var timers = [];
     var cycleTimer = null;
     var running = false;
+    var bloomEnabled = false;
+    var bloomAmount = 0;
 
     // Build DOM
     clearChildren(container);
@@ -236,8 +298,27 @@
       }
     }
 
+    function setBloom(value) {
+      if (value === false || value === 0) {
+        container.style.filter = '';
+        removeBloomFilter(id);
+        bloomEnabled = false;
+        bloomAmount = 0;
+      } else {
+        var amount = (typeof value === 'number') ? value : DEFAULT_BLOOM_AMOUNT;
+        bloomAmount = amount;
+        bloomEnabled = true;
+        createBloomFilter(id, amount);
+        container.style.filter = 'url(#pg-bloom-' + id + ')';
+      }
+    }
+
     function destroy() {
       stop();
+      if (bloomEnabled) {
+        container.style.filter = '';
+        removeBloomFilter(id);
+      }
       clearChildren(container);
       cells = [];
       delete instances[id];
@@ -248,11 +329,17 @@
       play: play,
       stop: stop,
       setAnimation: setAnimation,
+      setBloom: setBloom,
       destroy: destroy,
       getConfig: function() { return config; }
     };
 
     instances[id] = instance;
+
+    // Init bloom from options
+    if (opts.bloom) {
+      setBloom(opts.bloom);
+    }
 
     if (autoplay) {
       play();
@@ -274,7 +361,12 @@
       for (var i = 0; i < elements.length; i++) {
         var el = elements[i];
         var animName = el.getAttribute('data-pixel-grid-animation') || 'wave-lr';
-        created.push(createInstance(el, { animation: animName }));
+        var initOpts = { animation: animName };
+        if (el.hasAttribute('data-pixel-grid-bloom')) {
+          var bloomVal = el.getAttribute('data-pixel-grid-bloom');
+          initOpts.bloom = bloomVal ? parseFloat(bloomVal) : true;
+        }
+        created.push(createInstance(el, initOpts));
       }
       return created;
     },

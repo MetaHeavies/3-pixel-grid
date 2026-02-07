@@ -33,6 +33,11 @@
   --pixel-glow: oklch(75% 0.18 195 / 0.8);
 }
 
+/* ─── Bloom ─── */
+
+/* Applied via JS — filter: url(#pg-bloom-{id}) is set inline by the engine.
+   The SVG filter definition is injected automatically when bloom is enabled. */
+
 /* ─── Reduced Motion ─── */
 
 @media (prefers-reduced-motion: reduce) {
